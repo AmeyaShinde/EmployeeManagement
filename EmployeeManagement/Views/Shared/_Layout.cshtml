@@ -1,0 +1,106 @@
+﻿@inject SignInManager<ApplicationUser> signInManager;
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <environment include="Development">
+            <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+            <script src="~/lib/jquery/jquery.js"></script>
+            <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+            <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+                  crossorigin="anonymous" asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
+                  asp-fallback-test-value="absolute" asp-suppress-fallback-integrity="true" />
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous" asp-fallback-src="~/lib/jquery/jquery.slim.min.js"
+                    asp-fallback-test="window.jQuery" asp-suppress-fallback-integrity="true"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"
+                    integrity="sha384-6UVI3atWyL/qZbDIJb7HW8PyHhFNMiX5rYNY2gAYcaYJjYk5cNIQShSQPBleGMYu"
+                    crossorigin="anonymous" asp-fallback-src="~/lib/jquery-validate/jquery.validate.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.validator"
+                    asp-suppress-fallback-integrity="true"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.11/dist/jquery.validate.unobtrusive.min.js"
+                    integrity="sha384-R3vNCHsZ+A2Lo3d5A6XNP7fdQkeswQWTIPfiYwSpEP3YV079R+93YzTeZRah7f/F"
+                    crossorigin="anonymous" asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
+                    asp-suppress-fallback-integrity="true"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+                    crossorigin="anonymous" asp-fallback-src="~/lib/bootstrap/js/bootstrap.bundle.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    asp-suppress-fallback-integrity="true"></script>
+        </environment>
+        <link href="~/css/site.css" rel="stylesheet" />
+        <title>@ViewBag.Title</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+                <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                    <img src="~/images/employees.png" height="30" width="30" />
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Home" class="nav-link">List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Create" asp-controller="Home" class="nav-link">Create</a>
+                        </li>
+                        @*@if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {*@
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a asp-action="ListUsers" asp-controller="Administration" class="dropdown-item">Users</a>
+                                    <a asp-action="ListRoles" asp-controller="Administration" class="dropdown-item">Roles</a>
+                                </div>
+                            </li>
+                        @*}*@
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-action="Logout" asp-controller="Account">
+                                    <button type="submit" class="nav-link btn btn-link p-2 border-0" style="width: auto;">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Register" asp-controller="Account" class="nav-link">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </nav>
+            <div>
+                @RenderBody()
+            </div>
+            @if (IsSectionDefined("Scripts"))
+            {
+                RenderSection("Scripts", required: true);
+            }
+        </div>
+    </body>
+</html>
